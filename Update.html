@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+<html>
+<meta charset="utf-8">
+<title>Taxi Routes in Babol</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.3.0/mapbox-gl-draw.js'></script>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.css' type='text/css' />
+
+ <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
+
+ <link
+ href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.css"
+ rel="stylesheet"
+ id="bootstrap-css"
+/>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<!-- Font farsi -->
+
+ <link href='http://www.fontonline.ir/css/BKoodakBold.css' rel='stylesheet' type='text/css'>
+ <style>
+      *{
+      font-family:BKoodakBold,'BKoodakBold',tahoma;
+      font-size:14px;
+     }
+ </style>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+.info-box {
+  position: absolute;
+  margin: 20px;
+  width: 25%;
+  top: 0;
+  bottom: 20px;
+  padding: 20px;
+  background-color: #fff;
+  overflow-y: scroll;
+}
+
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<div class="info-box">
+    
+       <p> <strong> خوش آمدید</strong> &#128516;</p>
+    <p>
+
+      شما می‌توانید با استفاده از ابزارهای تعریف شده در بالا، مسیر مورد نظرتان را رسم کنید و جزییات سفرتان را مشاهده کنید. همچنین می‌توانید از پیشنهاد ما برای انتخاب مسیر بهتر استفاده کنید.
+
+
+
+      <!-- I'm here to help you findout your trip duration and other details you might need. Moreover "Taxi Routes" are shown in pink color on the map. <br> -->
+      <!-- Draw your route using the "<em>LineString</em>" tool on the right. To get the most -->
+      <!-- accurate route match, draw points at regular intervals. -->
+    </p>
+    <div id="google_translate_element"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <div id="directions"></div>
+  </div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1Ijoicm94YW5hLXNoYWphcmlhbiIsImEiOiJja3gzZm5waTQwMzFwMnJwa3NjZzBleTNrIn0.WsMr546MGnoAURJc8W7-7g';
+
+
+//support rtl language
+
+  mapboxgl.setRTLTextPlugin(
+'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
+null,
+true // Lazy load the plugin
+);
+
+
+const map = new mapboxgl.Map({
+container: 'map', // container ID
+style: 'mapbox://styles/mapbox/streets-v11', // style URL
+center:[52.6765,36.5387], // starting position [lng, lat]
+zoom: 15 // starting zoom
+});
+
+
+map.on('load', () => {
+        map.addSource('route', {
+            'type': 'geojson',
+            'data': {
+    'type': 'FeatureCollection',
+    'features': [
+      {
+        'type': 'Feature',
+        'properties': {},
+        'geometry': {
+          'type': 'LineString',
+          'coordinates': [
+                    [52.67834,36.56858],
+                    [52.67847,36.56896],
+                    [52.67832,36.56917],
+                    [52.67796,36.56942],
+                    [52.67713,36.57056],
+                    [52.67695,36.57086],
+                    [52.67508,36.57419],
+                    [52.67409,36.57982],
+                    [52.67374,36.58171],
+                    [52.67383,36.58286],
+                    [52.67399,36.58306],
+                    [52.67381,36.58333],
+                    [52.67345,36.58367],
+                    [52.67265,36.58747],
+                    [52.67253,36.58785],
+                    [52.672,36.58875],
+                    [52.66918,36.59232],
+                    [52.66919,36.5925],
+                    [52.66905,36.5925],
+                    [52.66535,36.5974]
+          ]
+        }
+      },
+      {
+        'type': 'Feature',
+        'properties': {},
+        'geometry': {
+          'type': 'LineString',
+          'coordinates': [
+              [52.68998,36.54053],
+              [52.69242,36.55056],
+              [52.69255,36.5557],
+              [52.69282,36.5559],
+              [52.69269,36.55622],
+              [52.69269,36.55644],
+              [52.68783,36.56186],
+              [52.67884,36.56892],
+              [52.67869,36.56884],
+              [52.67886,36.56869]
+          ]
+        }
+      },
+      {
+        'type': 'Feature',
+        'properties': {},
+        'geometry': {
+          'type': 'LineString',
+          'coordinates': [
+              [52.67657,36.54035],
+              [52.67728,36.55538],
+              [52.67735,36.55564],
+              [52.67753,36.5558],
+              [52.67987,36.55582],
+              [52.68,36.556],
+              [52.6796,36.55653],
+              [52.67931,36.56168],
+              [52.67923,36.5618],
+              [52.6782,36.56827]
+          ]
+        }
+      },
+      {
+        'type': 'Feature',
+        'properties': {},
+        'geometry': {
+          'type': 'LineString',
+          'coordinates': [
+              [52.67546,36.54832],
+              [52.6729,36.54855],
+              [52.67278,36.54861],
+              [52.67235,36.54864],
+              [52.67211,36.54861],
+              [52.67065,36.54301],
+              [52.67046,36.54278],
+              [52.67021,36.54259],
+              [52.6702,36.54235],
+              [52.67033,36.5422],
+              [52.67029,36.54159],
+              [52.66875,36.53745]
+          ]
+        }
+      },
+      {
+        'type': 'Feature',
+        'properties': {},
+        'geometry': {
+          'type': 'LineString',
+          'coordinates': [
+              [52.67577,36.57089],
+              [52.67207,36.56756],
+              [52.67166,36.56713],
+              [52.67155,36.56685],
+              [52.67165,36.55282],
+              [52.67202,36.55026],
+              [52.6721,36.54963],
+              [52.67213,36.54874],
+              [52.67197,36.54777],
+              [52.67066,36.54303]
+          ]
+        }
+      },
+    ]
+  }
+});
+
+        map.addLayer({
+            'id': 'route',
+            'type': 'line',
+            'source': 'route',
+            'layout': {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            'paint': {
+                'line-color': '#FF1493',
+                'line-width': 6
+            }
+        });
+    });
+
+const draw = new MapboxDraw({
+  // Instead of showing all the draw tools, show only the line string and delete tools.
+  displayControlsDefault: false,
+  controls: {
+    line_string: true,
+    trash: true
+  },
+  // Set the draw mode to draw LineStrings by default.
+  defaultMode: 'draw_line_string',
+  styles: [
+    // Set the line style for the user-input coordinates.
+    {
+      id: 'gl-draw-line',
+      type: 'line',
+      filter: ['all', ['==', '$type', 'LineString'], ['!=', 'mode', 'static']],
+      layout: {
+        'line-cap': 'round',
+        'line-join': 'round'
+      },
+      paint: {
+        'line-color': '#438EE4',
+        'line-dasharray': [0.2, 2],
+        'line-width': 4,
+        'line-opacity': 0.7
+      }
+    },
+    // Style the vertex point halos.
+    {
+      id: 'gl-draw-polygon-and-line-vertex-halo-active',
+      type: 'circle',
+      filter: [
+        'all',
+        ['==', 'meta', 'vertex'],
+        ['==', '$type', 'Point'],
+        ['!=', 'mode', 'static']
+      ],
+      paint: {
+        'circle-radius': 12,
+        'circle-color': '#FFF'
+      }
+    },
+    // Style the vertex points.
+    {
+      id: 'gl-draw-polygon-and-line-vertex-active',
+      type: 'circle',
+      filter: [
+        'all',
+        ['==', 'meta', 'vertex'],
+        ['==', '$type', 'Point'],
+        ['!=', 'mode', 'static']
+      ],
+      paint: {
+        'circle-radius': 8,
+        'circle-color': '#438EE4'
+      }
+    }
+  ]
+});
+
+// Add the draw tool to the map.
+map.addControl(draw);
+
+
+
+let dis=0;
+console.log(dis);
+
+let Rd=0;
+
+let Rds=0;
+
+function getDistance(x1, y1, x2, y2) { 
+	var xDiff = x1 - x2; 
+	var yDiff = y1 - y2; 
+
+	return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+  
+}
+
+function getDistanceFromLatLonInKm(x1, y1, x2, y2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(x2-x1);  // deg2rad below
+  var dLon = deg2rad(y2-y1); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(x1)) * Math.cos(deg2rad(x2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180);
+}
+
+
+// Function to return the minimum distance
+// between a line segment AB and a point E
+function minDistance( A,  B,  E)
+{
+ 
+    // vector AB
+    var AB=[];
+    AB.push (B[0] - A[0]);
+    AB.push(B[1] - A[1]);
+ 
+    // vector BP
+    var BE=[];
+    BE.push(E[0] - B[0]);
+    BE.push(E[1] - B[1]);
+ 
+    // vector AP
+   var AE=[];
+    AE.push(E[0] - A[0]),
+    AE.push(E[1] - A[1]);
+ 
+    // Variables to store dot product
+    var AB_BE, AB_AE;
+ 
+    // Calculating the dot product
+    AB_BE=(AB[0] * BE[0] + AB[1] * BE[1]);
+    AB_AE=(AB[0] * AE[0] + AB[1] * AE[1]);
+ 
+    // Minimum distance from
+    // point E to the line segment
+    var reqAns = 0;
+ 
+    // Case 1
+    if (AB_BE > 0) {
+ 
+        // Finding the magnitude
+        var y = E[1] - B[1];
+        var x = E[0] - B[0];
+        reqAns = Math.sqrt(x * x + y * y);
+    }
+ 
+    // Case 2
+    else if (AB_AE < 0) {
+        var y = E[1] - A[1];
+        var x = E[0] - A[0];
+        reqAns = Math.sqrt(x * x + y * y);
+    }
+ 
+    // Case 3
+    else {
+ 
+        // Finding the perpendicular distance
+       var x1 = AB[0];
+        var y1 = AB[1];
+       var x2 = AE[0];
+        var y2 = AE[1];
+        var mod = Math.sqrt(x1 * x1 + y1 * y1);
+        reqAns = Math.abs(x1 * y2 - y1 * x2) / mod;
+    }
+    return reqAns;
+}
+
+
+
+// Use the coordinates you drew to make the Map Matching API request
+function updateRoute() {
+  // Set the profile
+  const profile = 'driving';
+  // Get the coordinates that were drawn on the map
+  const data = draw.getAll();
+  const lastFeature = data.features.length - 1;
+  const coords = data.features[lastFeature].geometry.coordinates;
+
+  console.log(coords);
+
+const x1 = coords[0][0];
+const y1 = coords[0][1];
+
+const x2 = coords[coords.length-1][0];
+const y2 = coords[coords.length-1][1];
+
+dis = getDistance(x1,y1,x2,y2);
+disInkm = getDistanceFromLatLonInKm(x1,y1,x2,y2);
+
+//Route 1
+const A1 = [52.67834,36.56858];
+const B1 = [52.66535,36.5974];
+const E = [x1,y1];
+const r1 = minDistance(A1,B1,E);
+
+//2
+
+const A2 = [52.68998,36.54053];
+const B2 = [52.67886,36.56869];
+
+const r2 = minDistance(A2,B2,E);
+
+//3
+
+const A3 = [52.67657,36.54035];
+const B3 = [52.6782,36.56827];
+
+const r3 = minDistance(A3,B3,E);
+
+
+//4
+const A4 = [52.67546,36.54832];
+const B4 = [52.66875,36.53745];
+
+const r4 = minDistance(A4,B4,E);
+
+
+//5
+const A5 = [52.67577,36.57089];
+const B5 = [52.67066,36.54303];
+
+const r5 = minDistance(A5,B5,E);
+
+console.log(r5);
+
+
+//
+
+Rd = Math.min(r1,r2,r3,r4,r5);
+
+
+  // Format the coordinates
+  const newCoords = coords.join(';');
+  // Set the radius for each coordinate pair to 25 meters
+  const radius = coords.map(() => 25);
+
+  getMatch(newCoords, radius, profile);
+
+}
+
+
+// Make a Map Matching request
+async function getMatch(coordinates, radius, profile) {
+  // Separate the radiuses with semicolons
+  const radiuses = radius.join(';');
+  // Create the query
+  const query = await fetch(
+    `https://api.mapbox.com/matching/v5/mapbox/${profile}/${coordinates}?geometries=geojson&radiuses=${radiuses}&steps=true&access_token=${mapboxgl.accessToken}`,
+    { method: 'GET' }
+  );
+  const response = await query.json();
+  // Handle errors
+  if (response.code !== 'Ok') {
+    alert(
+      `${response.code} - ${response.message}.\n\nFor more information: https://docs.mapbox.com/api/navigation/map-matching/#map-matching-api-errors`
+    );
+    return;
+  }
+    function trans(string){
+      const dictionary = require('english-persian-dictionary');
+      return dictionary.string;
+    }
+    function toFarsiNumber(n) {
+    const farsiDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
+    return n
+        .toString()
+        .replace(/\d/g, x => farsiDigits[x]);
+}
+  function getInstructions(data) {
+  
+  // Target the sidebar to add the instructions
+  const directions = document.getElementById('directions');
+  //const dictionary = require('english-persian-dictionary');
+  let tripDirections = '';
+  // Output the instructions for each step of each leg in the response object
+  for (const leg of data.legs) {
+    const steps = leg.steps;
+    for (const step of steps) {
+      tripDirections += `<li dir="rtl" align="right">${step.maneuver.instruction}</li>`;
+    }
+  }
+  directions.innerHTML = `<p dir="rtl" align="right"><strong>مدت زمان سفر: ${Math.floor(
+    data.duration / 60
+  )} دقیقه</strong></p><ol dir="rtl" align="right">${tripDirections}</ol>
+  </br>
+  <p dir="rtl" align="right"> 
+  <strong dir="rtl" align="right"> فاصله به کیلومتر مربع :<br> ${toFarsiNumber(disInkm)}</strong></p>
+  <p dir="rtl" align="right">
+  <strong dir="rtl" align="right">فاصله بین تاکسی و کاربر : ${toFarsiNumber(Rd)}</strong></p>`;
+
+      
+}
+
+  // Get the coordinates from the response
+  const coords = response.matchings[0].geometry;
+   // Draw the route on the map
+   addRoute(coords);
+   getInstructions(response.matchings[0]);
+  // Code from the next step will go here
+
+}
+map.on('draw.create', updateRoute);
+map.on('draw.update', updateRoute);
+
+// Draw the Map Matching route as a new layer on the map
+function addRoute(coords) {
+  // If a route is already loaded, remove it
+  if (map.getSource('route')) {
+    map.removeLayer('route');
+    map.removeSource('route');
+  } else {
+    // Add a new layer to the map
+    map.addLayer({
+      id: 'route',
+      type: 'line',
+      source: {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: {},
+          geometry: coords
+        }
+      },
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': '#03AA46',
+        'line-width': 8,
+        'line-opacity': 0.8
+      }
+    });
+    
+  }
+}
+
+
+
+</script>
+ 
+</body>
+</html>
